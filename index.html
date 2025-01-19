@@ -8,11 +8,11 @@
         /* Основные стили */
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
             color: #fff;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            background: #1e3c72; /* Фон по умолчанию */
         }
 
         /* Боковое меню */
@@ -77,26 +77,6 @@
             color: #ccc;
         }
 
-        /* Кнопка открытия/закрытия меню */
-        .menu-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 10px;
-            padding: 10px;
-            color: #fff;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 1001;
-            transition: background 0.3s;
-        }
-
-        .menu-toggle:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
         /* Основной контент */
         .content {
             padding: 20px;
@@ -129,18 +109,6 @@
             color: #ccc;
             max-width: 600px;
             margin: 0 auto;
-        }
-
-        /* Параллакс-эффект */
-        .parallax {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://via.placeholder.com/1920x1080') no-repeat center center/cover;
-            z-index: -1;
-            transform: translateZ(-1px) scale(2);
         }
 
         /* Товары */
@@ -323,67 +291,196 @@
             }
         }
 
-        /* Летающие элементы на фоне */
-        @keyframes float {
+        /* Анимация фона с линиями */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1e3c72, #2a5298, #4a90e2, #6a5acd);
+            background-size: 400% 400%;
+            z-index: -1;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Линии на фоне */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 50px,
+                rgba(255, 255, 255, 0.05) 50px,
+                rgba(255, 255, 255, 0.05) 100px
+            );
+            z-index: -1;
+            animation: moveLines 10s linear infinite;
+            filter: blur(5px); /* Размытие линий */
+        }
+
+        @keyframes moveLines {
             0% {
                 transform: translateY(0);
             }
-            50% {
-                transform: translateY(-20px);
-            }
             100% {
-                transform: translateY(0);
+                transform: translateY(-100px);
             }
         }
 
-        .floating-element {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: float 5s infinite ease-in-out;
+        /* Автоматическое открытие меню */
+        .menu-trigger {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 100vh;
+            z-index: 999;
         }
 
-        .floating-element:nth-child(1) {
-            top: 10%;
-            left: 10%;
-            animation-duration: 6s;
+        .menu-trigger:hover ~ .sidebar {
+            left: 0;
         }
 
-        .floating-element:nth-child(2) {
-            top: 20%;
-            right: 10%;
-            animation-duration: 7s;
+        .sidebar:hover {
+            left: 0;
         }
 
-        .floating-element:nth-child(3) {
-            bottom: 10%;
-            left: 20%;
-            animation-duration: 8s;
+        /* Футер */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            text-align: center;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .floating-element:nth-child(4) {
-            bottom: 20%;
-            right: 20%;
-            animation-duration: 9s;
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        footer a {
+            color: #4a90e2;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .items {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .sidebar {
+                width: 200px;
+                left: -200px;
+            }
+
+            .content.shifted {
+                margin-left: 200px;
+            }
+
+            .cart {
+                top: 10px;
+                right: 10px;
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            .scroll-top {
+                bottom: 10px;
+                right: 10px;
+                padding: 10px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 50px 10px;
+            }
+
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+            }
+
+            .items {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .sidebar {
+                width: 150px;
+                left: -150px;
+            }
+
+            .content.shifted {
+                margin-left: 150px;
+            }
+
+            .cart {
+                top: 5px;
+                right: 5px;
+                font-size: 0.8rem;
+                padding: 6px;
+            }
+
+            .scroll-top {
+                bottom: 5px;
+                right: 5px;
+                padding: 8px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Кнопка открытия/закрытия меню -->
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <!-- Триггер для открытия меню -->
+    <div class="menu-trigger"></div>
 
     <!-- Боковое меню -->
     <div class="sidebar" id="sidebar">
         <h1>ECOSYSTEM</h1>
         <div class="search-box">
-            <input type="text" placeholder="Поиск...">
+            <input type="text" id="search-input" placeholder="Поиск..." oninput="filterItems()">
         </div>
-        <button onclick="showCategory('all')">Все товары</button>
-        <button onclick="showCategory('pants')">Штаны</button>
-        <button onclick="showCategory('jackets')">Куртки</button>
-        <button onclick="showCategory('tshirts')">Футболки</button>
+        <button onclick="window.location.href='pants.html'">Штаны</button>
+        <button onclick="window.location.href='jackets.html'">Куртки</button>
+        <button onclick="window.location.href='tshirts.html'">Футболки</button>
     </div>
 
     <!-- Корзина -->
@@ -393,7 +490,6 @@
     <div class="content" id="content">
         <!-- Главная страница -->
         <div class="hero">
-            <div class="parallax"></div>
             <h2>Добро пожаловать в ECOSYSTEM!</h2>
             <p>
                 Мы — лучший магазин стильной одежды. Наша миссия — сделать ваш стиль уникальным и комфортным. 
@@ -401,25 +497,41 @@
             </p>
         </div>
 
-        <!-- Товары -->
-        <div class="items">
-            <div class="item" data-category="pants" onclick="openModal('Штаны', 'Стильные и удобные штаны для любого случая.')">
+        <!-- Популярные категории -->
+        <div class="items" id="items-container">
+            <div class="item" data-category="pants" data-name="Штаны">
                 <img src="https://via.placeholder.com/200" alt="Штаны">
                 <h3>Штаны</h3>
                 <p>Цена: $50</p>
             </div>
-            <div class="item" data-category="jackets" onclick="openModal('Куртка', 'Тёплая и стильная куртка для холодных дней.')">
+            <div class="item" data-category="jackets" data-name="Куртка">
                 <img src="https://via.placeholder.com/200" alt="Куртка">
                 <h3>Куртка</h3>
                 <p>Цена: $120</p>
             </div>
-            <div class="item" data-category="tshirts" onclick="openModal('Футболка', 'Лёгкая и удобная футболка для повседневной носки.')">
+            <div class="item" data-category="tshirts" data-name="Футболка">
                 <img src="https://via.placeholder.com/200" alt="Футболка">
                 <h3>Футболка</h3>
                 <p>Цена: $30</p>
             </div>
+            <div class="item" data-category="shoes" data-name="Кроссовки">
+                <img src="https://via.placeholder.com/200" alt="Кроссовки">
+                <h3>Кроссовки</h3>
+                <p>Цена: $90</p>
+            </div>
+            <div class="item" data-category="hats" data-name="Шапка">
+                <img src="https://via.placeholder.com/200" alt="Шапка">
+                <h3>Шапка</h3>
+                <p>Цена: $25</p>
+            </div>
         </div>
     </div>
+
+    <!-- Футер -->
+    <footer>
+        <p>Поддержка: <a href="https://t.me/resgg" target="_blank">Telegram @resgg</a></p>
+        <p>&copy; 2023 ECOSYSTEM. Все права защищены.</p>
+    </footer>
 
     <!-- Модальное окно -->
     <div class="modal" id="modal">
@@ -437,19 +549,19 @@
     <!-- Уведомление -->
     <div class="notification" id="notification">Нет в наличии</div>
 
-    <!-- Летающие элементы на фоне -->
-    <div class="floating-element"></div>
-    <div class="floating-element"></div>
-    <div class="floating-element"></div>
-    <div class="floating-element"></div>
-
     <script>
-        // Функция для открытия/закрытия меню
-        function toggleMenu() {
-            const sidebar = document.getElementById('sidebar');
-            const content = document.getElementById('content');
-            sidebar.classList.toggle('active');
-            content.classList.toggle('shifted');
+        // Функция для фильтрации товаров по поиску
+        function filterItems() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            const items = document.querySelectorAll('.item');
+            items.forEach(item => {
+                const itemName = item.getAttribute('data-name').toLowerCase();
+                if (itemName.includes(searchInput)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
         }
 
         // Функция для открытия модального окна
@@ -494,18 +606,6 @@
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
-            });
-        }
-
-        // Функция для фильтрации товаров по категориям
-        function showCategory(category) {
-            const items = document.querySelectorAll('.item');
-            items.forEach(item => {
-                if (category === 'all' || item.getAttribute('data-category') === category) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
             });
         }
     </script>
