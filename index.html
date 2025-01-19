@@ -23,20 +23,15 @@
             backdrop-filter: blur(10px);
             position: fixed;
             top: 0;
-            left: 0;
+            left: -250px;
             padding: 20px;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-            transform: translateX(-100%);
-            animation: slideIn 0.5s forwards;
+            transition: left 0.3s ease;
+            z-index: 1000;
         }
 
-        @keyframes slideIn {
-            from {
-                transform: translateX(-100%);
-            }
-            to {
-                transform: translateX(0);
-            }
+        .sidebar.active {
+            left: 0;
         }
 
         .sidebar h1 {
@@ -82,34 +77,59 @@
             color: #ccc;
         }
 
-        /* Основной контент */
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-        }
-
-        .categories {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .category-btn {
+        /* Кнопка открытия/закрытия меню */
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
             background: rgba(255, 255, 255, 0.1);
             border: none;
             border-radius: 10px;
-            padding: 10px 20px;
+            padding: 10px;
             color: #fff;
-            font-size: 1rem;
+            font-size: 1.5rem;
             cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
+            z-index: 1001;
+            transition: background 0.3s;
         }
 
-        .category-btn:hover {
+        .menu-toggle:hover {
             background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-5px);
         }
 
+        /* Основной контент */
+        .content {
+            padding: 20px;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+        }
+
+        .content.shifted {
+            margin-left: 250px;
+        }
+
+        /* Главная страница */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Товары */
         .items {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -173,8 +193,11 @@
     </style>
 </head>
 <body>
+    <!-- Кнопка открытия/закрытия меню -->
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
     <!-- Боковое меню -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <h1>ECOSYSTEM</h1>
         <div class="search-box">
             <input type="text" placeholder="Поиск...">
@@ -186,13 +209,17 @@
     </div>
 
     <!-- Основной контент -->
-    <div class="content">
-        <div class="categories">
-            <button class="category-btn" onclick="showCategory('all')">Все</button>
-            <button class="category-btn" onclick="showCategory('pants')">Штаны</button>
-            <button class="category-btn" onclick="showCategory('jackets')">Куртки</button>
-            <button class="category-btn" onclick="showCategory('tshirts')">Футболки</button>
+    <div class="content" id="content">
+        <!-- Главная страница -->
+        <div class="hero">
+            <h2>Добро пожаловать в ECOSYSTEM!</h2>
+            <p>
+                Мы — лучший магазин стильной одежды. Наша миссия — сделать ваш стиль уникальным и комфортным. 
+                У нас вы найдёте только качественные товары, которые подчеркнут вашу индивидуальность.
+            </p>
         </div>
+
+        <!-- Товары -->
         <div class="items">
             <div class="item" data-category="pants" onclick="showNotification()">
                 <img src="https://via.placeholder.com/200" alt="Штаны">
@@ -216,6 +243,14 @@
     <div class="notification" id="notification">Нет в наличии</div>
 
     <script>
+        // Функция для открытия/закрытия меню
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            sidebar.classList.toggle('active');
+            content.classList.toggle('shifted');
+        }
+
         // Функция для показа уведомления
         function showNotification() {
             const notification = document.getElementById('notification');
