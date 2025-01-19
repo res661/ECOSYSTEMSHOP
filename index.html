@@ -12,13 +12,13 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            background: #1e3c72; /* Фон по умолчанию (ночная тема) */
-            transition: background 0.3s ease, color 0.3s ease;
+            background: #1e3c72; /* Фон по умолчанию */
+            transition: background 0.3s, color 0.3s;
         }
 
         body.light-theme {
-            background: linear-gradient(135deg, #f5f7fa, #c3cfe2); /* Дневная тема */
-            color: #333;
+            background: #f4f4f4;
+            color: #000;
         }
 
         /* Боковое меню */
@@ -36,6 +36,11 @@
             z-index: 1000;
         }
 
+        body.light-theme .sidebar {
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+        }
+
         .sidebar.active {
             left: 0;
         }
@@ -44,6 +49,11 @@
             font-size: 2rem;
             margin-bottom: 20px;
             color: #fff;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        body.light-theme .sidebar h1 {
+            color: #000;
         }
 
         .sidebar button {
@@ -58,6 +68,11 @@
             width: 100%;
             text-align: left;
             transition: background 0.3s, transform 0.2s;
+        }
+
+        body.light-theme .sidebar button {
+            background: rgba(0, 0, 0, 0.1);
+            color: #000;
         }
 
         .sidebar button:hover {
@@ -77,6 +92,11 @@
             background: rgba(255, 255, 255, 0.1);
             color: #fff;
             font-size: 1rem;
+        }
+
+        body.light-theme .search-box input {
+            background: rgba(0, 0, 0, 0.1);
+            color: #000;
         }
 
         .search-box input::placeholder {
@@ -106,6 +126,10 @@
             animation: fadeIn 1s ease-in-out;
         }
 
+        body.light-theme .hero {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
         .hero h2 {
             font-size: 3rem;
             margin-bottom: 20px;
@@ -118,10 +142,8 @@
             max-width: 600px;
             margin: 0 auto;
             animation: slideIn 1.5s ease-in-out;
-        }
-
-        body.light-theme .hero {
-            background: rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
         }
 
         body.light-theme .hero p {
@@ -142,8 +164,13 @@
             text-align: center;
             cursor: pointer;
             transition: background 0.3s, transform 0.2s;
-            animation: fadeIn 1s ease-in-out;
+            animation: loading 0.5s ease-in-out;
+            animation-fill-mode: both;
             position: relative;
+        }
+
+        body.light-theme .item {
+            background: rgba(0, 0, 0, 0.1);
         }
 
         .item:hover {
@@ -167,161 +194,68 @@
             color: #ccc;
         }
 
-        body.light-theme .item {
-            background: rgba(0, 0, 0, 0.1);
-        }
-
         body.light-theme .item p {
             color: #666;
         }
 
-        .item .favorite {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 50%;
-            padding: 10px;
+        .item .add-to-cart {
+            background: #4a90e2;
             color: #fff;
-            font-size: 1rem;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
             transition: background 0.3s;
         }
 
-        .item .favorite:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .item .add-to-cart:hover {
+            background: #357abd;
         }
 
-        .item .favorite.active {
-            color: #ff4757;
+        /* Анимации */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
-        /* Слайдер */
-        .slider {
-            margin: 50px 0;
-            overflow: hidden;
-            border-radius: 20px;
-            position: relative;
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
-        .slider .slides {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
+        @keyframes loading {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        .slider .slide {
-            min-width: 100%;
-            box-sizing: border-box;
-        }
-
-        .slider .slide img {
-            width: 100%;
-            border-radius: 20px;
-        }
-
-        .slider .prev, .slider .next {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 50%;
-            padding: 10px;
-            color: #fff;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .slider .prev:hover, .slider .next:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .slider .prev {
-            left: 10px;
-        }
-
-        .slider .next {
-            right: 10px;
-        }
-
-        /* Счетчик */
-        .counter {
-            text-align: center;
-            margin: 50px 0;
-        }
-
-        .counter h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .counter .count {
-            font-size: 3rem;
-            color: #4a90e2;
-        }
-
-        /* Отзывы */
-        .reviews {
-            margin: 50px 0;
-            text-align: center;
-        }
-
-        .reviews h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .reviews .review {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .reviews .review h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        .reviews .review p {
-            font-size: 1rem;
-            color: #ccc;
-        }
-
-        body.light-theme .reviews .review {
-            background: rgba(0, 0, 0, 0.1);
-        }
-
-        body.light-theme .reviews .review p {
-            color: #666;
-        }
-
-        /* Переключатель темы */
-        .theme-switcher {
+        /* Триггер для открытия меню */
+        .menu-trigger {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 10px;
-            padding: 10px;
-            color: #fff;
-            font-size: 1rem;
-            cursor: pointer;
-            z-index: 1001;
-            transition: background 0.3s;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 100vh;
+            z-index: 999;
+            background: transparent;
         }
 
-        .theme-switcher:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .menu-trigger:hover ~ .sidebar {
+            left: 0;
         }
 
-        body.light-theme .theme-switcher {
-            background: rgba(0, 0, 0, 0.1);
-            color: #333;
+        .sidebar:hover {
+            left: 0;
         }
 
         /* Футер */
@@ -331,6 +265,11 @@
             text-align: center;
             margin-top: 50px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-theme footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
         }
 
         footer p {
@@ -348,13 +287,88 @@
             text-decoration: underline;
         }
 
-        body.light-theme footer {
-            background: rgba(255, 255, 255, 0.8);
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        /* Счетчик корзины */
+        .cart-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4a90e2;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 50%;
+            font-size: 1rem;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: transform 0.2s;
         }
 
-        body.light-theme footer p {
-            color: #666;
+        .cart-counter:hover {
+            transform: scale(1.1);
+        }
+
+        /* Модальное окно корзины */
+        #cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #cart-modal .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            color: #000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #cart-modal .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        #cart-modal .cart-item button {
+            background: #ff4d4d;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #cart-modal .cart-item button:hover {
+            background: #cc0000;
+        }
+
+        #cart-modal .modal-content button {
+            background: #4a90e2;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #cart-modal .modal-content button:hover {
+            background: #357abd;
         }
 
         /* Адаптивность для мобильных устройств */
@@ -378,20 +392,6 @@
 
             .content.shifted {
                 margin-left: 200px;
-            }
-
-            .cart {
-                top: 10px;
-                right: 10px;
-                font-size: 0.9rem;
-                padding: 8px;
-            }
-
-            .scroll-top {
-                bottom: 10px;
-                right: 10px;
-                padding: 10px;
-                font-size: 1.2rem;
             }
         }
 
@@ -420,26 +420,15 @@
             .content.shifted {
                 margin-left: 150px;
             }
-
-            .cart {
-                top: 5px;
-                right: 5px;
-                font-size: 0.8rem;
-                padding: 6px;
-            }
-
-            .scroll-top {
-                bottom: 5px;
-                right: 5px;
-                padding: 8px;
-                font-size: 1rem;
-            }
         }
     </style>
 </head>
 <body>
+    <!-- Счетчик корзины -->
+    <div class="cart-counter" id="cart-counter" onclick="openCart()">0</div>
+
     <!-- Триггер для открытия меню -->
-    <div class="menu-trigger" onclick="toggleSidebar()">☰</div>
+    <div class="menu-trigger"></div>
 
     <!-- Боковое меню -->
     <div class="sidebar" id="sidebar">
@@ -450,97 +439,61 @@
         <button onclick="window.location.href='pants.html'">Штаны</button>
         <button onclick="window.location.href='jackets.html'">Куртки</button>
         <button onclick="window.location.href='tshirts.html'">Футболки</button>
+        <button id="theme-toggle" onclick="toggleTheme()">Светлая тема</button>
     </div>
-
-    <!-- Корзина -->
-    <div class="cart" onclick="toggleCart()">🛒 Корзина</div>
-
-    <!-- Переключатель темы -->
-    <button class="theme-switcher" onclick="toggleTheme()">🌙</button>
 
     <!-- Основной контент -->
     <div class="content" id="content">
         <!-- Главная страница -->
         <div class="hero">
             <h2>Добро пожаловать в ECOSYSTEM!</h2>
-            <p>
+            <p id="hero-text">
                 Мы — лучший магазин стильной одежды. Наша миссия — сделать ваш стиль уникальным и комфортным. 
                 У нас вы найдёте только качественные товары, которые подчеркнут вашу индивидуальность.
             </p>
         </div>
 
-        <!-- Слайдер -->
-        <div class="slider">
-            <div class="slides">
-                <div class="slide">
-                    <img src="https://via.placeholder.com/800x400" alt="Slide 1">
-                </div>
-                <div class="slide">
-                    <img src="https://via.placeholder.com/800x400" alt="Slide 2">
-                </div>
-                <div class="slide">
-                    <img src="https://via.placeholder.com/800x400" alt="Slide 3">
-                </div>
-            </div>
-            <button class="prev" onclick="prevSlide()">❮</button>
-            <button class="next" onclick="nextSlide()">❯</button>
-        </div>
-
         <!-- Популярные категории -->
         <div class="items" id="items-container">
             <div class="item" data-category="pants" data-name="Штаны">
-                <button class="favorite" onclick="toggleFavorite(this)">❤️</button>
                 <img src="https://via.placeholder.com/200" alt="Штаны">
                 <h3>Штаны</h3>
                 <p>Цена: $50</p>
+                <button class="add-to-cart" onclick="addToCart('Штаны', 50)">В корзину</button>
             </div>
             <div class="item" data-category="jackets" data-name="Куртка">
-                <button class="favorite" onclick="toggleFavorite(this)">❤️</button>
                 <img src="https://via.placeholder.com/200" alt="Куртка">
                 <h3>Куртка</h3>
                 <p>Цена: $120</p>
+                <button class="add-to-cart" onclick="addToCart('Куртка', 120)">В корзину</button>
             </div>
             <div class="item" data-category="tshirts" data-name="Футболка">
-                <button class="favorite" onclick="toggleFavorite(this)">❤️</button>
                 <img src="https://via.placeholder.com/200" alt="Футболка">
                 <h3>Футболка</h3>
                 <p>Цена: $30</p>
+                <button class="add-to-cart" onclick="addToCart('Футболка', 30)">В корзину</button>
             </div>
             <div class="item" data-category="shoes" data-name="Кроссовки">
-                <button class="favorite" onclick="toggleFavorite(this)">❤️</button>
                 <img src="https://via.placeholder.com/200" alt="Кроссовки">
                 <h3>Кроссовки</h3>
                 <p>Цена: $90</p>
+                <button class="add-to-cart" onclick="addToCart('Кроссовки', 90)">В корзину</button>
             </div>
             <div class="item" data-category="hats" data-name="Шапка">
-                <button class="favorite" onclick="toggleFavorite(this)">❤️</button>
                 <img src="https://via.placeholder.com/200" alt="Шапка">
                 <h3>Шапка</h3>
                 <p>Цена: $25</p>
+                <button class="add-to-cart" onclick="addToCart('Шапка', 25)">В корзину</button>
             </div>
         </div>
+    </div>
 
-        <!-- Счетчик -->
-        <div class="counter">
-            <h2>Довольных клиентов:</h2>
-            <div class="count" id="clientCount">0</div>
-        </div>
-
-        <!-- Отзывы -->
-        <div class="reviews">
-            <h2>Отзывы</h2>
-            <div class="review">
-                <h3>Иван Иванов</h3>
-                <p>Отличный магазин, быстрая доставка, качественные товары!</p>
-            </div>
-            <div class="review">
-                <h3>Мария Петрова</h3>
-                <p>Очень довольна покупками, всем рекомендую!</p>
-            </div>
-            <div class="review">
-                <h3>Алексей Смирнов</h3>
-                <p>Лучший выбор одежды по доступным ценам.</p>
-            </div>
+    <!-- Модальное окно корзины -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <h2>Корзина</h2>
+            <div id="cart-items"></div>
+            <button onclick="closeCart()">Закрыть</button>
         </div>
     </div>
 
@@ -550,22 +503,6 @@
         <p>&copy; 2023 ECOSYSTEM. Все права защищены.</p>
     </footer>
 
-    <!-- Модальное окно -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal()">×</button>
-            <h3 id="modal-title"></h3>
-            <p id="modal-description"></p>
-            <button onclick="addToCart()">Добавить в корзину</button>
-        </div>
-    </div>
-
-    <!-- Кнопка "Наверх" -->
-    <button class="scroll-top" onclick="scrollToTop()" id="scrollTop">↑</button>
-
-    <!-- Уведомление -->
-    <div class="notification" id="notification">Нет в наличии</div>
-
     <script>
         // Функция для фильтрации товаров по поиску
         function filterItems() {
@@ -573,113 +510,105 @@
             const items = document.querySelectorAll('.item');
             items.forEach(item => {
                 const itemName = item.getAttribute('data-name').toLowerCase();
-                if (itemName.includes(searchInput)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
+                item.style.display = itemName.includes(searchInput) ? 'block' : 'none';
             });
         }
 
-        // Функция для открытия модального окна
-        function openModal(title, description) {
-            const modal = document.getElementById('modal');
-            const modalTitle = document.getElementById('modal-title');
-            const modalDescription = document.getElementById('modal-description');
-            modalTitle.textContent = title;
-            modalDescription.textContent = description;
-            modal.classList.add('active');
+        // Открытие/закрытие бокового меню при наведении мыши
+        const sidebar = document.getElementById('sidebar');
+        const menuTrigger = document.querySelector('.menu-trigger');
+
+        menuTrigger.addEventListener('mouseenter', () => {
+            sidebar.classList.add('active');
+        });
+
+        sidebar.addEventListener('mouseleave', () => {
+            sidebar.classList.remove('active');
+        });
+
+        // Логика корзины
+        let cart = [];
+
+        function addToCart(itemName, itemPrice) {
+            cart.push({ name: itemName, price: itemPrice });
+            updateCartCounter();
+            showModal(`Товар "${itemName}" добавлен в корзину!`);
         }
 
-        // Функция для закрытия модального окна
-        function closeModal() {
-            const modal = document.getElementById('modal');
-            modal.classList.remove('active');
+        function removeFromCart(itemName) {
+            const index = cart.findIndex(item => item.name === itemName);
+            if (index !== -1) {
+                cart.splice(index, 1);
+                updateCartCounter();
+                showModal(`Товар "${itemName}" удален из корзины!`);
+            }
         }
 
-        // Функция для добавления товара в корзину
-        function addToCart() {
-            const notification = document.getElementById('notification');
-            notification.textContent = 'Товар добавлен в корзину!';
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 2000);
-            closeModal();
+        function updateCartCounter() {
+            const cartCounter = document.getElementById('cart-counter');
+            cartCounter.textContent = cart.length;
         }
 
-        // Функция для показа/скрытия кнопки "Наверх"
-        window.onscroll = function() {
-            const scrollTop = document.getElementById('scrollTop');
-            if (window.scrollY > 300) {
-                scrollTop.classList.add('active');
+        function openCart() {
+            const cartModal = document.getElementById('cart-modal');
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Корзина пуста</p>';
             } else {
-                scrollTop.classList.remove('active');
+                cart.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'cart-item';
+                    itemElement.innerHTML = `
+                        <p>${item.name} - $${item.price}</p>
+                        <button onclick="removeFromCart('${item.name}')">Убрать</button>
+                    `;
+                    cartItemsContainer.appendChild(itemElement);
+                });
             }
-        };
 
-        // Функция для прокрутки вверх
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            cartModal.style.display = 'flex';
         }
 
-        // Слайдер
-        let slideIndex = 0;
-        const slides = document.querySelector('.slides');
-        const totalSlides = document.querySelectorAll('.slide').length;
-
-        function nextSlide() {
-            slideIndex = (slideIndex + 1) % totalSlides;
-            slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+        function closeCart() {
+            const cartModal = document.getElementById('cart-modal');
+            cartModal.style.display = 'none';
         }
 
-        function prevSlide() {
-            slideIndex = (slideIndex - 1 + totalSlides) % totalSlides;
-            slides.style.transform = `translateX(-${slideIndex * 100}%)`;
-        }
-
-        // Счетчик
-        let count = 0;
-        const clientCount = document.getElementById('clientCount');
-        const targetCount = 1000;
-
-        function updateCounter() {
-            if (count < targetCount) {
-                count += 5;
-                clientCount.textContent = count;
-                setTimeout(updateCounter, 10);
-            }
-        }
-
-        updateCounter();
-
-        // Переключатель темы
+        // Переключение темы
         function toggleTheme() {
             const body = document.body;
             body.classList.toggle('light-theme');
-            const themeSwitcher = document.querySelector('.theme-switcher');
+            const themeButton = document.getElementById('theme-toggle');
             if (body.classList.contains('light-theme')) {
-                themeSwitcher.textContent = '🌞';
+                themeButton.textContent = 'Темная тема';
             } else {
-                themeSwitcher.textContent = '🌙';
+                themeButton.textContent = 'Светлая тема';
             }
         }
 
-        // В избранное
-        function toggleFavorite(button) {
-            button.classList.toggle('active');
+        // Анимация текста в блоке приветствия
+        const heroTexts = [
+            "Мы — лучший магазин стильной одежды. Наша миссия — сделать ваш стиль уникальным и комфортным.",
+            "У нас вы найдёте только качественные товары, которые подчеркнут вашу индивидуальность.",
+            "Мы работаем с 2010 года и уже успели завоевать доверие тысяч клиентов.",
+            "Ваш стиль — наша забота. Качество и комфорт в каждой детали."
+        ];
+
+        let currentTextIndex = 0;
+        const heroTextElement = document.getElementById('hero-text');
+
+        function changeHeroText() {
+            heroTextElement.style.opacity = 0;
+            setTimeout(() => {
+                currentTextIndex = (currentTextIndex + 1) % heroTexts.length;
+                heroTextElement.textContent = heroTexts[currentTextIndex];
+                heroTextElement.style.opacity = 1;
+            }, 500); // Плавное исчезновение и появление
         }
 
-        // Открытие/закрытие бокового меню
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const content = document.getElementById('content');
-            sidebar.classList.toggle('active');
-            content.classList.toggle('shifted');
-        }
+        setInterval(changeHeroText, 15000); // Меняем текст каждые 15 секунд
     </script>
 </body>
 </html>
