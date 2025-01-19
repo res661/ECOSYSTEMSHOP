@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOSYSTEM</title>
+    <style>
+        /* Основные стили */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .category-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            padding: 15px 25px;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .category-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .item img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .item h3 {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .item p {
+            font-size: 1rem;
+            color: #ccc;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 59, 48, 0.9);
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            display: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ECOSYSTEM</h1>
+        <div class="categories">
+            <button class="category-btn" onclick="showCategory('all')">Все</button>
+            <button class="category-btn" onclick="showCategory('pants')">Штаны</button>
+            <button class="category-btn" onclick="showCategory('jackets')">Куртки</button>
+            <button class="category-btn" onclick="showCategory('tshirts')">Футболки</button>
+        </div>
+        <div class="items">
+            <div class="item" data-category="pants" onclick="showNotification()">
+                <img src="https://via.placeholder.com/200" alt="Штаны">
+                <h3>Штаны</h3>
+                <p>Цена: $50</p>
+            </div>
+            <div class="item" data-category="jackets" onclick="showNotification()">
+                <img src="https://via.placeholder.com/200" alt="Куртка">
+                <h3>Куртка</h3>
+                <p>Цена: $120</p>
+            </div>
+            <div class="item" data-category="tshirts" onclick="showNotification()">
+                <img src="https://via.placeholder.com/200" alt="Футболка">
+                <h3>Футболка</h3>
+                <p>Цена: $30</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">Нет в наличии</div>
+
+    <script>
+        // Функция для показа уведомления
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 2000);
+        }
+
+        // Функция для фильтрации товаров по категориям
+        function showCategory(category) {
+            const items = document.querySelectorAll('.item');
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-category') === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
