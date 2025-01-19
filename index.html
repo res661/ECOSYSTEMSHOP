@@ -115,6 +115,8 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
         }
 
         .hero h2 {
@@ -127,6 +129,18 @@
             color: #ccc;
             max-width: 600px;
             margin: 0 auto;
+        }
+
+        /* Параллакс-эффект */
+        .parallax {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://via.placeholder.com/1920x1080') no-repeat center center/cover;
+            z-index: -1;
+            transform: translateZ(-1px) scale(2);
         }
 
         /* Товары */
@@ -166,6 +180,124 @@
             color: #ccc;
         }
 
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1002;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-content h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-content p {
+            font-size: 1rem;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .modal-content button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .modal-content button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            padding: 10px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Корзина */
+        .cart {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 1001;
+            transition: background 0.3s;
+        }
+
+        .cart:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Кнопка "Наверх" */
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            padding: 15px;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+            transition: background 0.3s;
+            display: none;
+        }
+
+        .scroll-top:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .scroll-top.active {
+            display: block;
+        }
+
         /* Уведомление */
         .notification {
             position: fixed;
@@ -190,6 +322,52 @@
                 opacity: 1;
             }
         }
+
+        /* Летающие элементы на фоне */
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 5s infinite ease-in-out;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-duration: 6s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 20%;
+            right: 10%;
+            animation-duration: 7s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 10%;
+            left: 20%;
+            animation-duration: 8s;
+        }
+
+        .floating-element:nth-child(4) {
+            bottom: 20%;
+            right: 20%;
+            animation-duration: 9s;
+        }
     </style>
 </head>
 <body>
@@ -208,10 +386,14 @@
         <button onclick="showCategory('tshirts')">Футболки</button>
     </div>
 
+    <!-- Корзина -->
+    <div class="cart" onclick="toggleCart()">🛒 Корзина</div>
+
     <!-- Основной контент -->
     <div class="content" id="content">
         <!-- Главная страница -->
         <div class="hero">
+            <div class="parallax"></div>
             <h2>Добро пожаловать в ECOSYSTEM!</h2>
             <p>
                 Мы — лучший магазин стильной одежды. Наша миссия — сделать ваш стиль уникальным и комфортным. 
@@ -221,17 +403,17 @@
 
         <!-- Товары -->
         <div class="items">
-            <div class="item" data-category="pants" onclick="showNotification()">
+            <div class="item" data-category="pants" onclick="openModal('Штаны', 'Стильные и удобные штаны для любого случая.')">
                 <img src="https://via.placeholder.com/200" alt="Штаны">
                 <h3>Штаны</h3>
                 <p>Цена: $50</p>
             </div>
-            <div class="item" data-category="jackets" onclick="showNotification()">
+            <div class="item" data-category="jackets" onclick="openModal('Куртка', 'Тёплая и стильная куртка для холодных дней.')">
                 <img src="https://via.placeholder.com/200" alt="Куртка">
                 <h3>Куртка</h3>
                 <p>Цена: $120</p>
             </div>
-            <div class="item" data-category="tshirts" onclick="showNotification()">
+            <div class="item" data-category="tshirts" onclick="openModal('Футболка', 'Лёгкая и удобная футболка для повседневной носки.')">
                 <img src="https://via.placeholder.com/200" alt="Футболка">
                 <h3>Футболка</h3>
                 <p>Цена: $30</p>
@@ -239,8 +421,27 @@
         </div>
     </div>
 
+    <!-- Модальное окно -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">×</button>
+            <h3 id="modal-title"></h3>
+            <p id="modal-description"></p>
+            <button onclick="addToCart()">Добавить в корзину</button>
+        </div>
+    </div>
+
+    <!-- Кнопка "Наверх" -->
+    <button class="scroll-top" onclick="scrollToTop()" id="scrollTop">↑</button>
+
     <!-- Уведомление -->
     <div class="notification" id="notification">Нет в наличии</div>
+
+    <!-- Летающие элементы на фоне -->
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
 
     <script>
         // Функция для открытия/закрытия меню
@@ -251,13 +452,49 @@
             content.classList.toggle('shifted');
         }
 
-        // Функция для показа уведомления
-        function showNotification() {
+        // Функция для открытия модального окна
+        function openModal(title, description) {
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+            modalTitle.textContent = title;
+            modalDescription.textContent = description;
+            modal.classList.add('active');
+        }
+
+        // Функция для закрытия модального окна
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.remove('active');
+        }
+
+        // Функция для добавления товара в корзину
+        function addToCart() {
             const notification = document.getElementById('notification');
+            notification.textContent = 'Товар добавлен в корзину!';
             notification.style.display = 'block';
             setTimeout(() => {
                 notification.style.display = 'none';
             }, 2000);
+            closeModal();
+        }
+
+        // Функция для показа/скрытия кнопки "Наверх"
+        window.onscroll = function() {
+            const scrollTop = document.getElementById('scrollTop');
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('active');
+            } else {
+                scrollTop.classList.remove('active');
+            }
+        };
+
+        // Функция для прокрутки вверх
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
 
         // Функция для фильтрации товаров по категориям
